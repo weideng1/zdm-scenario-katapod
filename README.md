@@ -6,4 +6,4 @@ Preferrably through the dedicated [ZDM Scenario page](https://www.datastax.com/d
 
 ... alternatively, use this link:
 
-[![Open in Katapod](https://github.com/DataStax-Academy/katapod-shared-assets/blob/main/images/open-in-katapod.png)](https://gitpod.io/#https://github.com/DataStax-Academy/zdm-scenario-katapod.git)
+[![Open in Katapod](https://github.com/DataStax-Academy/katapod-shared-assets/blob/main/images/open-in-katapod.png)](https://gitpod.io/#https://github.com/weideng1/zdm-scenario-katapod.git)
