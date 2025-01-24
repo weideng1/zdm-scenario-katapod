@@ -60,10 +60,10 @@ The Astra CLI is preinstalled for you: configure it with
 
 ```bash
 ### host
-astra setup --token <AstraCS:...>
+astra setup
 ```
 
-and replace the `AstraCS:...` part above with your actual token.
+and provide the AstraCS:... part of the token when prompted.
 
 Have the CLI prepare a `.env` file, useful to later retrieve the database ID _(edit the database name if different from `zdmtarget`)_:
 
