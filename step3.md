@@ -38,9 +38,9 @@ Download and extract the utility:
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
 cd /workspace/zdm-scenario-katapod/running_zdm_util
-wget https://github.com/datastax/zdm-proxy-automation/releases/download/v2.2.0/zdm-util-linux-amd64-v2.2.0.tgz
-tar -xvf zdm-util-linux-amd64-v2.2.0.tgz
-rm zdm-util-linux-amd64-v2.2.0.tgz
+wget https://github.com/datastax/zdm-proxy-automation/releases/download/v2.3.1/zdm-util-linux-amd64-v2.3.1.tgz
+tar -xvf zdm-util-linux-amd64-v2.3.1.tgz
+rm zdm-util-linux-amd64-v2.3.1.tgz
 ```
 
 _Note: commands on a background of a colour like the one above are part of the "core" migration process, as opposed to the setup/context commands you encountered so far._
@@ -88,7 +88,7 @@ Start the config utility with:
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
 cd /workspace/zdm-scenario-katapod/running_zdm_util
-./zdm-util-v2.2.0
+./zdm-util-v2.3.1
 ```
 
 Once you are done, answer "Yes" when asked "Do you wish to proceed?": a `zdm-ansible-container` is created and started
