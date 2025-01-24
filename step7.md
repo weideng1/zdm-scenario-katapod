@@ -31,20 +31,13 @@ of the _whole_ contents of the database. To this end
 you will use the Sideloader, an AstraDB service enabling you to provide a snapshot of your data so that it can be automatically uploaded to Target. You interact with the Sideloader through dedicated DevOps APIs.
 
 Verify that the entries inserted before the switch to using the ZDM Proxy are **not** found on Target.
-To do so, **if you went through the Astra CLI path**, launch this command _(editing the database name if different from `zdmtarget`)_:
+To do so, launch this command _(editing the database name if different from `zdmtarget`)_:
 
 ```bash
 ### host
 astra db cqlsh zdmtarget \
   -k zdmapp \
   -e "SELECT * FROM zdmapp.user_status WHERE user='eva' limit 30;"
-```
-
-or, **if you used the Astra UI**, go to the Web CQL Console and run the statement:
-
-```cql
-### {"execute": false}
-SELECT * FROM zdmapp.user_status WHERE user='eva' limit 30;
 ```
 
 You should see just the few rows written once you restarted the API to take advantage of the ZDM Proxy.
@@ -60,10 +53,10 @@ docker exec \
 Next you have to initialize the Sideloader data migration for Target. The initialization API returns immediately and gives you a `migrationID`, which will be needed in the rest of the process.
 Additionally, the API asynchronously creates a migration directory into a secure bucket, and some credentials for read and write access.
 
-Execute the following command to call the initialization API and store the `migrationID` into an environment variable:
+Execute the following command to call the initialization API, storing the `migrationID` into an environment variable:
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
-MIGRATION_ID=$(curl -X POST \
+export MIGRATION_ID=$(curl -X POST \
     -H "Authorization: Bearer ${ASTRA_DB_APPLICATION_TOKEN}" \
     https://api.astra.datastax.com/v2/databases/${ASTRA_DB_ID}/migrations/initialize \
     | jq '.migrationID' | tr -d '"')
@@ -90,10 +83,10 @@ curl -X GET \
     -H "Authorization: Bearer ${ASTRA_DB_APPLICATION_TOKEN}" \
     https://api.astra.datastax.com/v2/databases/${ASTRA_DB_ID}/migrations/${MIGRATION_ID} \
     | jq . > init_complete_output.json
-MIGRATION_DIR=$(jq '.uploadBucketDir' init_complete_output.json | tr -d '"')
-ACCESS_KEY_ID=$(jq '.uploadCredentials.keys.accessKeyID' init_complete_output.json | tr -d '"')
-SECRET_ACCESS_KEY=$(jq '.uploadCredentials.keys.secretAccessKey' init_complete_output.json | tr -d '"')
-SESSION_TOKEN=$(jq '.uploadCredentials.keys.sessionToken' init_complete_output.json | tr -d '"')
+export MIGRATION_DIR=$(jq '.uploadBucketDir' init_complete_output.json | tr -d '"')
+export ACCESS_KEY_ID=$(jq '.uploadCredentials.keys.accessKeyID' init_complete_output.json | tr -d '"')
+export SECRET_ACCESS_KEY=$(jq '.uploadCredentials.keys.secretAccessKey' init_complete_output.json | tr -d '"')
+export SESSION_TOKEN=$(jq '.uploadCredentials.keys.sessionToken' init_complete_output.json | tr -d '"')
 ```
 
 Now you are ready to upload your snapshot to the migration directory. To do so, you will use the AWS CLI that is pre-installed on your Origin node. Remember that your Origin node runs as a Docker container, so the command below needs to pass the required environment variables from the host to the container.
@@ -119,7 +112,7 @@ docker exec \
   -e AWS_SESSION_TOKEN=$SESSION_TOKEN \
   -e MIGRATION_DIR=$MIGRATION_DIR \
   -it cassandra-origin-1 \
-  aws s3 ls --recursive $MIGRATION_DIR
+  aws s3 ls --recursive --summarize --human-readable $MIGRATION_DIR
 ```
 
 When the upload is complete, you are finally ready to launch the migration by calling the following API:
