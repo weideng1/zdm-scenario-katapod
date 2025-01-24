@@ -39,8 +39,8 @@ to perform most of the required steps from the console.
 However, database creation and generation of an associated token are still done on the Astra Web UI:
 
 - Create your [Astra account](https://astra.datastax.com/) if you haven't yet.
-- Create a database called `zdmtarget` with a `zdmapp` keyspace ([detailed instructions](https://awesome-astra.github.io/docs/pages/astra/create-instance/)). _for the Free Tier accounts, stick to the GCP cloud provider and choose a region without the "lock" icon). The DB will be ready to use in 2-3 minutes._
-- Get a **"Database Administrator"** database token from the Astra UI and store it in a safe place ([detailed instructions](https://awesome-astra.github.io/docs/pages/astra/create-token/#c-procedure)). _You will need it a few times throughout the exercise. For the migration process, a "R/W User" token would suffice, but a more powerful token is needed for the `astra-cli` automation._
+- Create a database called `zdmtarget` with a `zdmapp` keyspace ([detailed instructions](https://awesome-astra.github.io/docs/pages/astra/create-instance/)). _Use the AWS cloud provider. The DB will be ready to use in 2-3 minutes._
+- Get a **"Database Administrator"** database token from the Astra UI and store it in a safe place ([detailed instructions](https://awesome-astra.github.io/docs/pages/astra/create-token/#c-procedure)). _You will need it a few times throughout the exercise. For the ZDM Proxy a "R/W User" token would suffice, but a more powerful token is needed for the `astra-cli` automation and to use the Sideloader._
 
 <details class="katapod-details"><summary>I want to re-use an Astra DB instance I already have</summary>
 

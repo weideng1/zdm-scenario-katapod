@@ -27,13 +27,8 @@
 #### _🎯 Goal: ensuring historical data, inserted before the introduction of the ZDM Proxy, is present on the Target database._
 
 In order to completely migrate to Target, you must take care
-of the _whole_ contents of the database. To this end,
-you will now download, build and launch [DSBulk Migrator](https://github.com/datastax/dsbulk-migrator#readme)
-(a tool which, in turn, leverages the capabilities of [DSBulk](https://github.com/datastax/dsbulk#readme)).
-
-_Note: since the data featured in this exercise is rather small, and the data
-migration itself is not the main topic of this exercise, we are not using "Cassandra Data Migrator" here. But if you need advanced data renconciliation features, or you
-are dealing with a database exceeding a few tens of GB, that might be your best option._
+of the _whole_ contents of the database. To this end
+you will use the Sideloader, an AstraDB service enabling you to provide a snapshot of your data so that it can be automatically uploaded to Target. You interact with the Sideloader through dedicated DevOps APIs.
 
 Verify that the entries inserted before the switch to using the ZDM Proxy are **not** found on Target.
 To do so, **if you went through the Astra CLI path**, launch this command _(editing the database name if different from `zdmtarget`)_:
@@ -54,51 +49,101 @@ SELECT * FROM zdmapp.user_status WHERE user='eva' limit 30;
 
 You should see just the few rows written once you restarted the API to take advantage of the ZDM Proxy.
 
-Start the migration process by going to the `migration` directory and obtain the source
-code for DSBulk Migrator:
-
+Take a snapshot of all the data in the keyspace `zdmapp` on Origin, calling your snapshot `data_migration_snapshot` :
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
-cd /workspace/zdm-scenario-katapod/migration/
-git clone https://github.com/datastax/dsbulk-migrator.git
-cd dsbulk-migrator/
-# we pin a commit just to make sure the (versioned) jar name matches later on:
-git checkout 9b8a3759d3b59bcbcea191164d791ec8adc83ce9
+docker exec \
+  -it cassandra-origin-1 \
+  nodetool snapshot -t data_migration_snapshot zdmapp
 ```
 
-Build the project with (this may take 1-2 minutes):
+Next you have to initialize the Sideloader data migration for Target. The initialization API returns immediately and gives you a `migrationID`, which will be needed in the rest of the process.
+Additionally, the API asynchronously creates a migration directory into a secure bucket, and some credentials for read and write access.
 
+Execute the following command to call the initialization API and store the `migrationID` into an environment variable:
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
-cd /workspace/zdm-scenario-katapod/migration/dsbulk-migrator/
-mvn clean package
+MIGRATION_ID=$(curl -X POST \
+    -H "Authorization: Bearer ${ASTRA_DB_APPLICATION_TOKEN}" \
+    https://api.astra.datastax.com/v2/databases/${ASTRA_DB_ID}/migrations/initialize \
+    | jq '.migrationID' | tr -d '"')
 ```
 
-You can now start the migration, providing the necessary connection and
-schema information (the "export cluster" will be Origin and the
-"import cluster" will be Astra DB). To make this process easier, the
-following commands read the required connection settings also from the dot-env
-file you already set up for the client application:
-
+Periodically check the status of your migration until you see it switching to `ReceivingFiles`:
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
-cd /workspace/zdm-scenario-katapod/migration/dsbulk-migrator/
-. /workspace/zdm-scenario-katapod/scenario_scripts/find_addresses.sh
-. /workspace/zdm-scenario-katapod/client_application/.env
-
-java -jar target/dsbulk-migrator-1.0.0-SNAPSHOT-embedded-dsbulk.jar \
-  migrate-live \
-  -e \
-  --keyspaces=zdmapp \
-  --export-host=${CASSANDRA_SEED_IP} \
-  --export-username=cassandra \
-  --export-password=cassandra \
-  --import-username=${ASTRA_DB_CLIENT_ID} \
-  --import-password=${ASTRA_DB_CLIENT_SECRET} \
-  --import-bundle=${ASTRA_DB_SECURE_BUNDLE_PATH}
+curl -X GET \
+    -H "Authorization: Bearer ${ASTRA_DB_APPLICATION_TOKEN}" \
+    https://api.astra.datastax.com/v2/databases/${ASTRA_DB_ID}/migrations/${MIGRATION_ID} \
+    | jq .
 ```
 
-Once this command has completed, you will see that now _all_ rows are
+When the status switches to `ReceivingFiles`, the initialization is complete. At this point, the status response contains several values that will be needed in the next steps.
+These values are:
+ - The migration directory to which the snapshot must be uploaded.
+ - The credentials components that grant access to the migration directory.
+
+Run the following command to store these values into environment variables: 
+```bash
+### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
+curl -X GET \
+    -H "Authorization: Bearer ${ASTRA_DB_APPLICATION_TOKEN}" \
+    https://api.astra.datastax.com/v2/databases/${ASTRA_DB_ID}/migrations/${MIGRATION_ID} \
+    | jq . > init_complete_output.json
+MIGRATION_DIR=$(jq '.uploadBucketDir' init_complete_output.json | tr -d '"')
+ACCESS_KEY_ID=$(jq '.uploadCredentials.keys.accessKeyID' init_complete_output.json | tr -d '"')
+SECRET_ACCESS_KEY=$(jq '.uploadCredentials.keys.secretAccessKey' init_complete_output.json | tr -d '"')
+SESSION_TOKEN=$(jq '.uploadCredentials.keys.sessionToken' init_complete_output.json | tr -d '"')
+```
+
+Now you are ready to upload your snapshot to the migration directory. To do so, you will use the AWS CLI that is pre-installed on your Origin node. Remember that your Origin node runs as a Docker container, so the command below needs to pass the required environment variables from the host to the container.
+
+Run the following command:
+```bash
+### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
+docker exec \
+  -e AWS_ACCESS_KEY_ID=$ACCESS_KEY_ID \
+  -e AWS_SECRET_ACCESS_KEY=$SECRET_ACCESS_KEY \
+  -e AWS_SESSION_TOKEN=$SESSION_TOKEN \
+  -e MIGRATION_DIR=$MIGRATION_DIR \
+  -it cassandra-origin-1 \
+  aws s3 sync --only-show-errors --exclude '*' --include '*/snapshots/data_migration_snapshot*' /var/lib/cassandra/data/ $MIGRATION_DIR/node1
+```
+
+Check that the data has been uploaded correctly to the migration directory:
+```bash
+### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
+docker exec \
+  -e AWS_ACCESS_KEY_ID=$ACCESS_KEY_ID \
+  -e AWS_SECRET_ACCESS_KEY=$SECRET_ACCESS_KEY \
+  -e AWS_SESSION_TOKEN=$SESSION_TOKEN \
+  -e MIGRATION_DIR=$MIGRATION_DIR \
+  -it cassandra-origin-1 \
+  aws s3 ls --recursive $MIGRATION_DIR
+```
+
+When the upload is complete, you are finally ready to launch the migration by calling the following API:
+```bash
+### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
+curl -X POST \
+    -H "Authorization: Bearer ${ASTRA_DB_APPLICATION_TOKEN}" \
+    https://api.astra.datastax.com/v2/databases/${ASTRA_DB_ID}/migrations/${MIGRATION_ID}/launch \
+    | jq .
+```
+
+This API returns immediately after launching a long-running background process that imports your snapshot into Target.
+
+You can monitor the process through the same status API call as above:
+```bash
+### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
+curl -X GET \
+    -H "Authorization: Bearer ${ASTRA_DB_APPLICATION_TOKEN}" \
+    https://api.astra.datastax.com/v2/databases/${ASTRA_DB_ID}/migrations/${MIGRATION_ID} \
+    | jq .
+```
+The final status for a successful migration is `MigrationDone`. 
+
+Once the Sideloader process has completed, you will see that now _all_ rows are
 on Target as well, including those written prior to setting up
 the ZDM Proxy.
 
