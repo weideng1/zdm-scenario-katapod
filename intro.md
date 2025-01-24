@@ -74,7 +74,7 @@
               </li>
               <li>
                 <strong>Phase 2:</strong>
-                Migrate existing data using Cassandra Data Migrator and/or DSBulk Migrator. Validate that the migrated data is correct, while continuing to perform dual writes.
+                Migrate existing data using the AstraDB Sideloader. Validate that the migrated data is correct, while continuing to perform dual writes.
               </li>
               <li>
                 <strong>Phase 3:</strong>
