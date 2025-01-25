@@ -56,6 +56,7 @@ Additionally, the API asynchronously creates a migration directory into a secure
 Execute the following command to call the initialization API, storing the `migrationID` into an environment variable:
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
+source /workspace/zdm-scenario-katapod/.env
 export MIGRATION_ID=$(curl -X POST \
     -H "Authorization: Bearer ${ASTRA_DB_APPLICATION_TOKEN}" \
     https://api.astra.datastax.com/v2/databases/${ASTRA_DB_ID}/migrations/initialize \
@@ -100,7 +101,7 @@ docker exec \
   -e AWS_SESSION_TOKEN=$SESSION_TOKEN \
   -e MIGRATION_DIR=$MIGRATION_DIR \
   -it cassandra-origin-1 \
-  aws s3 sync --only-show-errors --exclude '*' --include '*/snapshots/data_migration_snapshot*' /var/lib/cassandra/data/ $MIGRATION_DIR/node1
+  aws s3 sync --only-show-errors --exclude '*' --include '*/snapshots/data_migration_snapshot*' /var/lib/cassandra/data/ ${MIGRATION_DIR}node1
 ```
 
 Check that the data has been uploaded correctly to the migration directory:
