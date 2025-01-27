@@ -12,11 +12,6 @@
   <a title="Back (astra-cli)" href='command:katapod.loadPage?[{"step":"step2_astra_cli"}]' 
     class="btn btn-dark navigation-top-left">⬅️ Back (astra-cli)
   </a>
-  <a title="Back (Astra UI)" href='command:katapod.loadPage?[{"step":"step2_astra_ui"}]' 
-    class="btn btn-dark navigation-top-left"
-    style="margin-left: 8px;"
-  >⬅️ Back (Astra UI)
-  </a>
   <span class="step-count">Step 3</span>
   <a title="Next" href='command:katapod.loadPage?[{"step":"step4"}]' 
     class="btn btn-dark navigation-top-right">Next ➡️
@@ -106,11 +101,6 @@ docker ps
 <div id="navigation-top" class="navigation-top">
   <a title="Back (astra-cli)" href='command:katapod.loadPage?[{"step":"step2_astra_cli"}]' 
     class="btn btn-dark navigation-top-left">⬅️ Back (astra-cli)
-  </a>
-  <a title="Back (Astra UI)" href='command:katapod.loadPage?[{"step":"step2_astra_ui"}]' 
-    class="btn btn-dark navigation-top-left"
-    style="margin-left: 8px;"
-  >⬅️ Back (Astra UI)
   </a>
   <a title="Next" href='command:katapod.loadPage?[{"step":"step4"}]' 
     class="btn btn-dark navigation-top-right">Next ➡️

@@ -13,11 +13,6 @@
     class="btn btn-dark navigation-top-left">⬅️ Back
   </a>
   <span class="step-count">Step 1</span>
-  <a title="Next (Astra UI)" href='command:katapod.loadPage?[{"step":"step2_astra_ui"}]' 
-    class="btn btn-dark navigation-top-right"
-    style="margin-left: 8px;"
-  >Next (Astra UI) ➡️
-  </a>
   <a title="Next (astra-cli)" href='command:katapod.loadPage?[{"step":"step2_astra_cli"}]' 
     class="btn btn-dark navigation-top-right">Next (astra-cli) ➡️
   </a>
@@ -97,19 +92,6 @@ The next API invocations will usually manipulate the output to make it more comp
 curl -s -XGET "localhost:8000/status/eva?entries=3" | jq -r '.[] | "\(.when)\t\(.status)"'
 ```
 
-You can even open a separate browser tab with the output
-and refresh it whenever you want to check.
-The following command (_specific to this learning environment_) opens it:
-
-```bash
-### host
-API_URL="`gp url 8000`/status/eva?entries=5"
-echo "Opening ${API_URL} ..."
-gp preview --external ${API_URL}
-```
-
-_(Depending on your browser and popup-blocker settings, chances are no tab will open at this point. In that case, simply grab the URL output on your console and manually point a new tab to that address.)_
-
 Now start a loop that periodically inserts a new (timestamped) status for Eva.
 You'll keep it running througout the practice, to put the "zero-downtime" aspect to test:
 
@@ -144,11 +126,6 @@ _↔️ Please choose how you would like to perform the next step (setting up Ta
 <div id="navigation-top" class="navigation-top">
   <a title="Back" href='command:katapod.loadPage?[{"step":"intro"}]' 
     class="btn btn-dark navigation-top-left">⬅️ Back
-  </a>
-  <a title="Next (Astra UI)" href='command:katapod.loadPage?[{"step":"step2_astra_ui"}]' 
-    class="btn btn-dark navigation-top-right"
-    style="margin-left: 8px;"
-  >Next (Astra UI) ➡️
   </a>
   <a title="Next (astra-cli)" href='command:katapod.loadPage?[{"step":"step2_astra_cli"}]' 
     class="btn btn-dark navigation-top-right">Next (astra-cli) ➡️
