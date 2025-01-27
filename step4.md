@@ -51,8 +51,7 @@ First check the IP address of the Cassandra node, with:
 ```
 
 Moreover you'll need the Target database ID:
-**if you went through the Astra CLI path**, your database ID is simply given by this command
-(check this [link](https://awesome-astra.github.io/docs/pages/astra/faq/#where-should-i-find-a-database-identifier) if you used the **Astra UI** instead):
+your database ID is simply given by this command:
 
 ```bash
 ### host

@@ -66,10 +66,10 @@ export MIGRATION_ID=$(curl -X POST \
 Periodically check the status of your migration until you see it switching to `ReceivingFiles`:
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
-curl -X GET \
+curl -s -X GET \
     -H "Authorization: Bearer ${ASTRA_DB_APPLICATION_TOKEN}" \
     https://api.astra.datastax.com/v2/databases/${ASTRA_DB_ID}/migrations/${MIGRATION_ID} \
-    | jq .
+    | jq .status
 ```
 
 When the status switches to `ReceivingFiles`, the initialization is complete. At this point, the status response contains several values that will be needed in the next steps.
@@ -130,10 +130,10 @@ This API returns immediately after launching a long-running background process t
 You can monitor the process through the same status API call as above:
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
-curl -X GET \
+curl -s -X GET \
     -H "Authorization: Bearer ${ASTRA_DB_APPLICATION_TOKEN}" \
     https://api.astra.datastax.com/v2/databases/${ASTRA_DB_ID}/migrations/${MIGRATION_ID} \
-    | jq .
+    | jq -r '"\(.status)\n\(.progressInfo)"'
 ```
 The final status for a successful migration is `MigrationDone`. 
 
@@ -141,21 +141,13 @@ Once the Sideloader process has completed, you will see that now _all_ rows are
 on Target as well, including those written prior to setting up
 the ZDM Proxy.
 
-To verify this,
-**if you went through the Astra CLI path**, launch this command _(editing the database name if different from `zdmtarget`)_:
+To verify this, launch this command _(editing the database name if different from `zdmtarget`)_:
 
 ```bash
 ### host
 astra db cqlsh zdmtarget \
   -k zdmapp \
   -e "SELECT * FROM zdmapp.user_status WHERE user='eva' limit 30;"
-```
-
-or, **if you used the Astra UI**, go to the Web CQL Console and run the statement:
-
-```cql
-### {"execute": false}
-SELECT * FROM zdmapp.user_status WHERE user='eva' limit 30;
 ```
 
 From this moment on, the data on Target will not diverge from Origin
