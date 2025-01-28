@@ -98,11 +98,10 @@ Restart the `docker logs` command,
 ### {"terminalId": "logs", "macrosBefore": ["ctrl_c"]}
 # A Ctrl-C to stop the logs (in case they're still running) ...
 # Then we start them again:
-docker logs -f zdm-proxy-container
+docker logs zdm-proxy-container 2>&1 | grep "DUAL_ASYNC"
 ```
 
-and look for a very long line (it's one of the first being written)
-containing something like
+The output should contain something like
 
 ```
 ### {"execute": false}
