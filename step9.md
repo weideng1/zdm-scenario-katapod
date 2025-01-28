@@ -87,20 +87,13 @@ docker exec \
   -e "SELECT * FROM zdmapp.user_status WHERE user='eva' limit 3;"
 ```
 
-For Target, **if you went through the Astra CLI path**, launch the following _(editing the database name if different from `zdmtarget`)_:
+For Target, launch the following _(editing the database name if different from `zdmtarget`)_:
 
 ```bash
 ### host
 astra db cqlsh zdmtarget \
   -k zdmapp \
   -e "SELECT * FROM zdmapp.user_status WHERE user='eva' limit 3;"
-```
-
-**otherwise**, paste this in the Astra DB CQL Web Console:
-
-```cql
-### {"execute": false}
-SELECT * FROM zdmapp.user_status WHERE user='eva' limit 3;
 ```
 
 #### _🗒️ You are almost at the end of this migration journey. The only missing step is to ... abandon the proxy altogether, writing directly to Target. Keep reading to do just that._
