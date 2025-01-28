@@ -34,20 +34,12 @@ Before doing that, however, let's finish writing the required settings in
 the `.env` file. Check the full path of the secure-connect-bundle zipfile
 you downloaded:
 
-**if you went through the Astra CLI path**, do so with:
+Retrieve the location of your secure connect bundle file from .env:
 
 ```bash
 ### logs
 # locate the bundle zipfile (if Astra CLI setup followed)
 grep ASTRA_DB_SECURE_BUNDLE_PATH /workspace/zdm-scenario-katapod/.env
-```
-
-**otherwise**, you can get the zipfile path by running:
-
-```bash
-### logs
-# locate the bundle zipfile (if Astra Web UI setup followed)
-ls /workspace/zdm-scenario-katapod/secure*zip
 ```
 
 Get the IP address of the proxy instance as well:
@@ -118,20 +110,13 @@ docker exec \
 ```
 
 Likewise, you can do the same check on Target, i.e. Astra DB:
-**if you went through the Astra CLI path**, you can run the following _(editing the database name if different from `zdmtarget`)_:
+Run the following _(editing the database name if different from `zdmtarget`)_:
 
 ```bash
 ### host
 astra db cqlsh zdmtarget \
   -k zdmapp \
   -e "SELECT * FROM zdmapp.user_status WHERE user='eva' limit 3;"
-```
-
-**otherwise**, paste this `SELECT` statement directly in the Astra DB Web CQL Console:
-
-```cql
-### {"execute": false}
-SELECT * FROM zdmapp.user_status WHERE user='eva' limit 3;
 ```
 
 Note that rows inserted before this switch are **not present** on Target.
