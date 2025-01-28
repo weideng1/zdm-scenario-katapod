@@ -72,7 +72,16 @@ curl -s -X GET \
     | jq .status
 ```
 
-When the status switches to `ReceivingFiles`, the initialization is complete. At this point, the status response contains several values that will be needed in the next steps.
+When the status switches to `ReceivingFiles`, the initialization is complete. Run the check status command again with the full output.
+```bash
+### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
+curl -s -X GET \
+    -H "Authorization: Bearer ${ASTRA_DB_APPLICATION_TOKEN}" \
+    https://api.astra.datastax.com/v2/databases/${ASTRA_DB_ID}/migrations/${MIGRATION_ID} \
+    | jq .
+```
+
+At this point, the status response contains several values that will be needed in the next steps.
 These values are:
  - The migration directory to which the snapshot must be uploaded.
  - The credentials components that grant access to the migration directory.
@@ -147,7 +156,7 @@ To verify this, launch this command _(editing the database name if different fro
 ### host
 astra db cqlsh zdmtarget \
   -k zdmapp \
-  -e "SELECT * FROM zdmapp.user_status WHERE user='eva' limit 30;"
+  -e "PAGING OFF; SELECT * FROM zdmapp.user_status WHERE user='eva' limit 500;"
 ```
 
 From this moment on, the data on Target will not diverge from Origin
