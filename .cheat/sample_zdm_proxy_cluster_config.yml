@@ -1,0 +1,38 @@
+---
+##############################
+#### ORIGIN CONFIGURATION ####
+##############################
+
+## Origin credentials
+origin_username: cassandra
+origin_password: cassandra
+
+## Set the following parameter only if Origin is an Astra cluster and you already have its secure connect bundle.
+#origin_astra_secure_connect_bundle_path: <path and filename of the secure connect bundle zip file for Origin >
+
+## Set the following two parameters only if Origin is an Astra cluster and you would like the automation to download the secure connect bundle automatically
+#origin_astra_db_id: <cluster id of the Origin Astra cluster>
+#origin_astra_token: <token of the same role as above >
+
+## Set the following two parameters only if Origin is a self-managed, non-Astra cluster
+origin_contact_points: 172.17.0.2
+origin_port: 9042
+
+##############################
+#### TARGET CONFIGURATION ####
+##############################
+
+## Target credentials
+target_username: token
+target_password: AstraCS:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+## Set the following parameter only if Target is an Astra cluster and you already have its secure connect bundle.
+#target_astra_secure_connect_bundle_path: <path and filename of the secure connect bundle zip file for Target >
+
+## Set the following two parameters only if Target is an Astra cluster and you would like the automation to download the secure connect bundle automatically
+target_astra_db_id: a90c8088-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+target_astra_token: AstraCS:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+## Set the following two parameters only if Target is a self-managed, non-Astra cluster
+#target_contact_points: <comma-separated list of private IP addresses, no spaces>
+#target_port: <typically 9042>

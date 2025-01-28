@@ -62,16 +62,16 @@ In file `zdm_proxy_cluster_config.yml`, you'll have to uncomment and edit the en
 _(Note that, within the container, all the file editing will have to be done in the console. To save and quit_
 _`nano` when you are done, hit `Ctrl-X`, then `Y`, then `Enter`.)_
 
-|Variable                 | Value|
-|-------------------------|------|
-|`origin_username`        | cassandra     |
-|`origin_password`        | cassandra     |
-|`origin_contact_points`  | _The IP of the **Cassandra seed** node (**Note**: this is the value of_ `CASSANDRA_SEED_IP` _as printed by `find_addresses.sh`, and not the ZDM host address)_     |
-|`origin_port`            | 9042     |
-|`target_username`        | _**Client ID** found in your Astra DB Token_     |
-|`target_password`        | _**Client Secret** found in your Astra DB Token_     |
-|`target_astra_db_id`     | _Your **Database ID** from the Astra DB dashboard_     |
-|`target_astra_token`     | _the **"token"** string in your Astra DB Token" (the one starting with `AstraCS:...`)_     |
+|Variable                 | Value                                                                                                                                                          |
+|-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|`origin_username`        | cassandra                                                                                                                                                      |
+|`origin_password`        | cassandra                                                                                                                                                      |
+|`origin_contact_points`  | _The IP of the **Cassandra seed** node (**Note**: this is the value of_ `CASSANDRA_SEED_IP` _as printed by `find_addresses.sh`, and not the ZDM host address)_ |
+|`origin_port`            | 9042                                                                                                                                                           |
+|`target_username`        | token                                                                                                                                                          |
+|`target_password`        | _the **"token"** string in your Astra DB Token" (the one starting with `AstraCS:...`)_                                                                                                           |
+|`target_astra_db_id`     | _Your **Database ID** from the Astra DB dashboard_                                                                                                             |
+|`target_astra_token`     | _the **"token"** string in your Astra DB Token" (the one starting with `AstraCS:...`)_                                                                         |
 
 
 ```bash
@@ -99,6 +99,11 @@ Once this is done, you can check the new container is listed in the output of
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
 docker ps
 ```
+
+<details class="katapod-details">
+<summary>If ZDM proxy fails to start, and you really want a little extra guidance, feel free to refer to the sample configuration file. (click to expand)</summary>
+/workspace/zdm-scenario-katapod/.cheat/sample_zdm_proxy_cluster_config.yml
+</details>
 
 By inspecting the logs of the containerized proxy instance, you can verify that it has indeed
 succeeded in connecting to the clusters:
