@@ -63,7 +63,14 @@ The Astra CLI is preinstalled for you: configure it with
 astra setup --token <AstraCS:...>
 ```
 
-and when you encounter the error "bash: syntax error near unexpected token `newline`", scroll up to the last command and replace the `AstraCS:...` part with your actual token.
+and when you encounter the error "bash: syntax error near unexpected token \`newline\`", scroll up to the last command and replace the `AstraCS:...` part with your actual token.
+
+Run the following command to verify your token is correctly saved:
+
+```bash
+### host
+cat ~/.astrarc
+```
 
 Have the CLI prepare a `.env` file, useful to later retrieve the database ID _(edit the database name if different from `zdmtarget`)_:
 
