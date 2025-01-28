@@ -63,7 +63,7 @@ The Astra CLI is preinstalled for you: configure it with
 astra setup --token <AstraCS:...>
 ```
 
-and replace the `AstraCS:...` part above with your actual token.
+and when you encounter the error "bash: syntax error near unexpected token `newline`", scroll up to the last command and replace the `AstraCS:...` part with your actual token.
 
 Have the CLI prepare a `.env` file, useful to later retrieve the database ID _(edit the database name if different from `zdmtarget`)_:
 
@@ -95,7 +95,9 @@ and then execute it on the newly-created Astra DB instance _(editing the databas
 ```bash
 ### host
 cd /workspace/zdm-scenario-katapod/
+astra db cqlsh zdmtarget -e "TRUNCATE zdmapp.user_status"
 astra db cqlsh zdmtarget -f target_config/target_schema.cql
+astra db cqlsh zdmtarget -e "SELECT * FROM zdmapp.user_status"
 ```
 
 #### _🗒️ Your brand new database is created and has the right schema. Now you can start setting up the ZDM process, instructing it to use Astra DB as target._
