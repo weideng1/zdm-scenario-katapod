@@ -95,6 +95,13 @@ Once you get the prompt back, check with
 docker ps
 ```
 
+If this is the first time you've launched the hands-on workshop, you can ignore the following step, otherwise, please run it to ensure the target table in your AstraDB database is fully truncated and no new write are present from the previous hands-on workshop(s).
+
+```bash
+### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
+astra db cqlsh zdmtarget -k zdmapp -e "TRUNCATE zdmapp.user_status"
+```
+
 #### _🗒️ The container is now all set to deploy the ZDM host(s) for you, which will then be ready to accept the connections currently directed at Origin cluster. Ready to deploy the hosts?_
 
 <!-- NAVIGATION -->
