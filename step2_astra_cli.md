@@ -72,6 +72,12 @@ Run the following command to verify your token is correctly saved:
 cat ~/.astrarc
 ```
 
+If you forgot to create `zdmapp` keyspace as instructed earlier, you can run the following astra-cli command to create it (edit the database name if different from `zdmtarget`):
+```bash
+### host
+astra db create-keyspace -k zdmapp zdmtarget
+```
+
 Have the CLI prepare a `.env` file, useful to later retrieve the database ID _(edit the database name if different from `zdmtarget`)_:
 
 ```bash
