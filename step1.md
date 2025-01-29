@@ -66,7 +66,7 @@ Test the API with a few calls: first check Eva's last three status updates, to c
 
 ```bash
 ### host
-curl -XGET "localhost:8000/status/eva?entries=3" | jq
+curl -s -XGET "localhost:8000/status/eva?entries=3" | jq
 ```
 
 _Note: you can customize the `entries` query parameter in all API GET calls to your needs._
@@ -75,14 +75,14 @@ Then write a new status:
 
 ```bash
 ### client
-curl -XPOST "localhost:8000/status/eva/New" | jq
+curl -s -XPOST "localhost:8000/status/eva/New" | jq
 ```
 
 Try the read again and check the output to see the new status:
 
 ```bash
 ### host
-curl -XGET localhost:8000/status/eva | jq
+curl -s -XGET localhost:8000/status/eva | jq
 ```
 
 The next API invocations will usually manipulate the output to make it more compact, as in:
