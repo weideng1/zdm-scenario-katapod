@@ -72,11 +72,7 @@ curl -s -X GET \
     | jq .status
 ```
 
-If you see this error message:
-```text
-parse error: Invalid numeric literal at line 1, column 9
-```
-just wait for a couple of minutes and try again.
+If you see this error message: `parse error: Invalid numeric literal at line 1, column 9`, just wait for a couple of minutes and try again.
 
 When the status switches to `ReceivingFiles`, the initialization is complete. Run the check status command again with the full output.
 ```bash
