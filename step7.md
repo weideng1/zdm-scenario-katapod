@@ -57,7 +57,7 @@ Execute the following command to call the initialization API, storing the `migra
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
 source /workspace/zdm-scenario-katapod/.env
-export MIGRATION_ID=$(curl -X POST \
+export MIGRATION_ID=$(curl -s -X POST \
     -H "Authorization: Bearer ${ASTRA_DB_APPLICATION_TOKEN}" \
     https://api.astra.datastax.com/v2/databases/${ASTRA_DB_ID}/migrations/initialize \
     | jq '.migrationID' | tr -d '"')
@@ -91,7 +91,7 @@ These values are:
 Run the following command to store these values into environment variables: 
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
-curl -X GET \
+curl -s -X GET \
     -H "Authorization: Bearer ${ASTRA_DB_APPLICATION_TOKEN}" \
     https://api.astra.datastax.com/v2/databases/${ASTRA_DB_ID}/migrations/${MIGRATION_ID} \
     | jq . > init_complete_output.json
@@ -130,7 +130,7 @@ docker exec \
 When the upload is complete, you are finally ready to launch the migration by calling the following API:
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
-curl -X POST \
+curl -s -X POST \
     -H "Authorization: Bearer ${ASTRA_DB_APPLICATION_TOKEN}" \
     https://api.astra.datastax.com/v2/databases/${ASTRA_DB_ID}/migrations/${MIGRATION_ID}/launch \
     | jq .

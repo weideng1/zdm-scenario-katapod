@@ -119,7 +119,7 @@ you can query it with
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
 . /workspace/zdm-scenario-katapod/scenario_scripts/find_addresses.sh
-curl http://${ZDM_HOST_IP}:14001/health/readiness | jq
+curl -s http://${ZDM_HOST_IP}:14001/health/readiness | jq
 ```
 
 #### _🗒️ The ZDM Proxy is now up and running, ready to accept connections just as if it were a regular Cassandra cluster. But before re-routing the client application, let's think about observability!_
