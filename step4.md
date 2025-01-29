@@ -105,6 +105,13 @@ docker ps
 /workspace/zdm-scenario-katapod/.cheat/sample_zdm_proxy_cluster_config.yml
 </details>
 
+<details class="katapod-details">
+<summary>If ZDM proxy installation fails at downloading secure connect bundle, because Astra DevOps API gives 403 error, you can use the SCB file astra-cli already downloaded in earlier step instead. (click to expand)</summary>
+1. Outside of the containers, run `docker cp <$HOME/.astra/scb/scb_xxx.zip> zdm-ansible-container:/home/ubuntu/`;
+2. Enter zdm-ansible-container, in `zdm_proxy_cluster_config.yml`, comment out `target_astra_db_id` and `target_astra_token` and set `target_astra_secure_connect_bundle_path` to `/home/ubuntu/scb_xxx.zip`;
+3. Rerun the deploy playbook.
+</details>
+
 By inspecting the logs of the containerized proxy instance, you can verify that it has indeed
 succeeded in connecting to the clusters:
 
