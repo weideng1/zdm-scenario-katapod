@@ -11,8 +11,8 @@ sudo sed 's/#AuthorizedKeysFile/AuthorizedKeysFile/' /etc/ssh/sshd_config -i
 sudo mkdir -p /root/.ssh
 cat /workspace/zdm-scenario-katapod/zdm_host_private_key/zdm_deploy_key.pub | sudo tee -a /root/.ssh/authorized_keys
 
-mkdir -p /home/gitpod/.ssh
-cat /workspace/zdm-scenario-katapod/zdm_host_private_key/zdm_deploy_key.pub | tee -a /home/gitpod/.ssh/authorized_keys
+mkdir -p /home/ubuntu/.ssh
+cat /workspace/zdm-scenario-katapod/zdm_host_private_key/zdm_deploy_key.pub | tee -a /home/ubuntu/.ssh/authorized_keys
 
 sudo service ssh restart
 
