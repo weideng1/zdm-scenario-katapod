@@ -108,9 +108,17 @@ and then execute it on the newly-created Astra DB instance _(editing the databas
 ```bash
 ### host
 cd /workspace/zdm-scenario-katapod/
-astra db cqlsh zdmtarget -e "TRUNCATE zdmapp.user_status"
+astra db cqlsh zdmtarget -e "DROP TABLE zdmapp.user_status"
 astra db cqlsh zdmtarget -f target_config/target_schema.cql
 astra db cqlsh zdmtarget -e "SELECT * FROM zdmapp.user_status"
+```
+
+HINT: If you encounter error `Keyspace 'zdmapp' does not exist`, you can run the following astr-cli command to create it before trying again:
+
+```bash
+### host
+cd /workspace/zdm-scenario-katapod/
+astra db create-keyspace -k zdmapp zdmtarget
 ```
 
 #### _🗒️ Your brand new database is created and has the right schema. Now you can start setting up the ZDM process, instructing it to use Astra DB as target._
