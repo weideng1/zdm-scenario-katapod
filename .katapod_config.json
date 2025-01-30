@@ -35,7 +35,7 @@
       "step4": {
         "host": [
           {
-            "command": "/workspace/zdm-scenario-katapod/scenario_scripts/gitpodize_zac.sh",
+            "command": "/workspace/zdm-scenario-katapod/scenario_scripts/customize_zac.sh",
             "maxInvocations": "unlimited"
           }
         ]
