@@ -45,9 +45,7 @@ First have a look at the contents of the table in Origin with this CQL query
 
 ```bash
 ### host
-docker exec \
-  -it cassandra-origin-1 \
-  cqlsh -u cassandra -p cassandra \
+  cqlsh dse -u cassandra -p cassandra \
   -e "SELECT * FROM zdmapp.user_status WHERE user='eva';"
 ```
 
