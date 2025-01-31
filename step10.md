@@ -70,9 +70,7 @@ from the picture:
 
 ```bash
 ### host
-docker exec \
-  -it cassandra-origin-1 \
-  cqlsh -u cassandra -p cassandra \
+cqlsh dse0 -u cassandra -p cassandra \
   -e "SELECT * FROM zdmapp.user_status WHERE user='eva' LIMIT 5;"
 ```
 
