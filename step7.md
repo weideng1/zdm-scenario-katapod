@@ -42,6 +42,16 @@ astra db cqlsh zdmtarget \
 
 You should see just the few rows written once you restarted the API to take advantage of the ZDM Proxy.
 
+In this Sideloader exercise, we will also include another keyspace `nutrition` as well. This was the keyspace that you ran `load_data` against earlier from work_generator VM. But before
+we include its content in our origin database snapshot, we should ensure the schema also exists on target database (Astra):
+```bash
+### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
+cd /workspace/zdm-scenario-katapod/
+cqlsh dse1 -u cassandra -p cassandra \
+-e "describe keyspace nutrition;" > target_config/target_nutrition_schema.cql
+astra db cqlsh zdmtarget -f target_config/target_nutrition_schema.cql
+```
+
 Take a snapshot of all the data in the keyspace `zdmapp` on Origin, calling your snapshot `data_migration_snapshot` :
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
