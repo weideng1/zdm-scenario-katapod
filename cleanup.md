@@ -106,6 +106,34 @@ touch $HOME/.bash_history
 rm -f $HOME/.viminfo
 ```
 
+Now, **optionally** if you want to be able to go back to step 0 and run through everything all over again, you should execute the following steps to
+provision a brand new C* container locally with some initial rows populated.
+
+```bash
+### host
+docker run \
+  --name cassandra-origin-1 \
+  -v ${PWD}/origin_config/cassandra-4.0.yaml:/etc/cassandra/cassandra.yaml \
+  -d \
+  cassandra:4.0
+sleep 10
+docker exec cassandra-origin-1 bash -c "
+  apt-get update && apt-get install -y \
+    python-is-python3 \
+    unzip \
+    python3-venv \
+    jq \
+    apt-transport-https \
+    ca-certificates \
+    gnupg \
+    curl \
+    sudo && \
+  curl \"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\" -o \"awscliv2.zip\" && \
+  unzip awscliv2.zip && ./aws/install && rm -rf awscliv2.zip aws && \
+  apt-get clean && rm -rf /var/lib/apt/lists/*
+"
+```
+
 #### _🗒️ Well, this is really the end. Time to wrap it up._
 
 <!-- NAVIGATION -->
