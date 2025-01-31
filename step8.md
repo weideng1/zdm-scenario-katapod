@@ -45,7 +45,7 @@ Even if, in this lab setup, the proxy container actually runs on the host machin
 . /workspace/zdm-scenario-katapod/scenario_scripts/find_addresses.sh
 ssh \
   -i /workspace/zdm-scenario-katapod/zdm_host_private_key/zdm_deploy_key \
-  gitpod@${ZDM_HOST_IP} -o StrictHostKeyChecking=no
+  ubuntu@${ZDM_HOST_IP} -o StrictHostKeyChecking=no
 ```
 
 You are now logged on to the ZDM Proxy host. Have Docker print
