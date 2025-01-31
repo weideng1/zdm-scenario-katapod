@@ -52,17 +52,9 @@ ansible-playbook deploy_zdm_monitoring.yml -i zdm_ansible_inventory
 Once this has completed, there will be a Grafana instance
 waiting for you. While generally it would be reached on port 3000 at
 your monitoring instance's address, _within this learning environment_
-you can directly open it in a new browser tab
-by running the command:
+you can directly use the following URL to open it in a new browser tab:
 
-```bash
-### host
-MONITORING_URL=`gp url 3000`
-echo "Opening ${MONITORING_URL} ..."
-gp preview --external ${MONITORING_URL}
-```
-
-_(Depending on your browser and popup-blocker settings, chances are no tab will open at this point. In that case, simply grab the URL output on your console and manually point a new tab to that address.)_
+`http://localhost:3000`
 
 Log in with user `admin` and the password you chose,
 then go to Dashboards/Manage and pick e.g.
@@ -79,7 +71,7 @@ are pouring in.
 
 #### 🔎 Monitoring suggestion
 
-**Please keep the dashboard open throughout the rest of this lab.**
+**Please keep the dashboard browser tab open throughout the rest of this lab.**
 
 For now, just scroll through the graphs in the dashboard
 to familiarize yourself with it. You will inspect it more in detail
