@@ -72,16 +72,11 @@ echo "killed api"
 echo "killed api-client"
 ```
 
-Then, **destroy Origin** (gulp!). In this case it is easy,
-it's just a single-node Cassandra cluster. _Note: in an
-actual production setup, you probably do not want to take this step lightly
-(and presumably it would be a bit more than one node)!_
+Then, drop `zdmapp` keyspace in origin database:
 
 ```bash
 ### host
-VOLUME_CASSANDRA_ORIGIN_1=`docker inspect cassandra-origin-1 | jq -r '.[].Mounts[] | select( .Type=="volume" ).Name'`
-docker rm -f cassandra-origin-1
-docker volume rm ${VOLUME_CASSANDRA_ORIGIN_1}
+cqlsh dse0 -u cassandra -p cassandra -e "DROP KEYSPACE zdmapp;"
 ```
 
 Finally, remove any remaining intermediate directories or configuration files that were generated during this hands-on workshop.
@@ -104,34 +99,6 @@ rm -f $HOME/.astra/scb/scb_*.zip
 rm -f $HOME/.bash_history
 touch $HOME/.bash_history
 rm -f $HOME/.viminfo
-```
-
-Now, **optionally** if you want to be able to go back to step 0 and run through everything all over again, you should execute the following steps to
-provision a brand new C* container locally with some initial rows populated.
-
-```bash
-### host
-docker run \
-  --name cassandra-origin-1 \
-  -v ${PWD}/origin_config/cassandra-4.0.yaml:/etc/cassandra/cassandra.yaml \
-  -d \
-  cassandra:4.0
-sleep 10
-docker exec cassandra-origin-1 bash -c "
-  apt-get update && apt-get install -y \
-    python-is-python3 \
-    unzip \
-    python3-venv \
-    jq \
-    apt-transport-https \
-    ca-certificates \
-    gnupg \
-    curl \
-    sudo && \
-  curl \"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\" -o \"awscliv2.zip\" && \
-  unzip awscliv2.zip && ./aws/install && rm -rf awscliv2.zip aws && \
-  apt-get clean && rm -rf /var/lib/apt/lists/*
-"
 ```
 
 #### _🗒️ Well, this is really the end. Time to wrap it up._
