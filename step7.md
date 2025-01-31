@@ -57,7 +57,8 @@ Take a snapshot of all the data in the keyspace `zdmapp` and `nutrition` on Orig
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
 for i in dse1 dse2 dse3; do
-  ssh -o StrictHostKeyChecking=no $i /opt/dse-6.8.53/bin/nodetool snapshot -t data_migration_snapshot zdmapp nutrition &
+  ssh -o StrictHostKeyChecking=no $i \
+  /opt/dse-6.8.53/bin/nodetool snapshot -t data_migration_snapshot zdmapp nutrition &
 done; wait
 ```
 
