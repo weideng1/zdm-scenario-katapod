@@ -43,7 +43,7 @@ astra db cqlsh zdmtarget \
 You should see just the few rows written once you restarted the API to take advantage of the ZDM Proxy.
 
 In this Sideloader exercise, we will also include another keyspace `nutrition` as well. This was the keyspace that you ran `load_data` against earlier from work_generator VM. But before
-we include its content in our origin database snapshot, we should ensure the schema also exists on target database (Astra):
+we include its content in our Origin snapshot, we should ensure the schema also exists on Target (Astra):
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
 astra db create-keyspace -k nutrition zdmtarget
@@ -53,7 +53,7 @@ cqlsh dse1 -u cassandra -p cassandra \
 astra db cqlsh zdmtarget -f target_config/target_nutrition_schema.cql
 ```
 
-Take a snapshot of all the data in the keyspace `zdmapp` on Origin, calling your snapshot `data_migration_snapshot` :
+Take a snapshot of all the data in the keyspace `zdmapp` and `nutrition` on Origin, calling your snapshot `data_migration_snapshot` :
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
 for i in dse1 dse2 dse3; do
@@ -110,9 +110,10 @@ export MIGRATION_DIR=$(jq '.uploadBucketDir' init_complete_output.json | tr -d '
 export AWS_ACCESS_KEY_ID=$(jq '.uploadCredentials.keys.accessKeyID' init_complete_output.json | tr -d '"')
 export AWS_SECRET_ACCESS_KEY=$(jq '.uploadCredentials.keys.secretAccessKey' init_complete_output.json | tr -d '"')
 export AWS_SESSION_TOKEN=$(jq '.uploadCredentials.keys.sessionToken' init_complete_output.json | tr -d '"')
+rm -f init_complete_output.json
 ```
 
-Now you are ready to upload your snapshot to the migration directory. To do so, you will use the AWS CLI that is pre-installed on your Origin node.
+Now you are ready to upload your snapshot to the migration directory. To do so, you will use the AWS CLI that is pre-installed on your Origin nodes.
 
 Run the following command:
 ```bash
@@ -174,6 +175,9 @@ To verify this, launch this command _(editing the database name if different fro
 astra db cqlsh zdmtarget \
   -k zdmapp \
   -e "PAGING OFF; SELECT * FROM zdmapp.user_status WHERE user='eva' limit 500;"
+
+astra db cqlsh zdmtarget \
+  -e "select count(*) from nutrition.nutrition_data;"
 ```
 
 From this moment on, the data on Target will not diverge from Origin
