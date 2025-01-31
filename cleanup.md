@@ -67,7 +67,7 @@ echo "killed api"
 ```
 
 ```bash
-### {"terminalId": "api-client", "macrosBefore": ["ctrl_c"]}
+### {"terminalId": "client", "macrosBefore": ["ctrl_c"]}
 # A Ctrl-C to stop the running process ...
 echo "killed api-client"
 ```
