@@ -58,6 +58,20 @@ docker rm -f \
 docker volume rm zdm-prometheus-metrics-volume
 ```
 
+Kill the processes running on the terminals to simulate web application and endless `curl` for loop:
+
+```bash
+### {"terminalId": "api", "macrosBefore": ["ctrl_c"]}
+# A Ctrl-C to stop the running process ...
+echo "killed api"
+```
+
+```bash
+### {"terminalId": "api-client", "macrosBefore": ["ctrl_c"]}
+# A Ctrl-C to stop the running process ...
+echo "killed api-client"
+```
+
 Then, **destroy Origin** (gulp!). In this case it is easy,
 it's just a single-node Cassandra cluster. _Note: in an
 actual production setup, you probably do not want to take this step lightly
