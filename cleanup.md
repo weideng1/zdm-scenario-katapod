@@ -58,7 +58,7 @@ docker rm -f \
 docker volume rm zdm-prometheus-metrics-volume
 ```
 
-Finally, **destroy Origin** (gulp!). In this case it is easy,
+Then, **destroy Origin** (gulp!). In this case it is easy,
 it's just a single-node Cassandra cluster. _Note: in an
 actual production setup, you probably do not want to take this step lightly
 (and presumably it would be a bit more than one node)!_
@@ -68,6 +68,24 @@ actual production setup, you probably do not want to take this step lightly
 VOLUME_CASSANDRA_ORIGIN_1=`docker inspect cassandra-origin-1 | jq -r '.[].Mounts[] | select( .Type=="volume" ).Name'`
 docker rm -f cassandra-origin-1
 docker volume rm ${VOLUME_CASSANDRA_ORIGIN_1}
+```
+
+Finally, remove any remaining intermediate directories or configuration files that were generated during this hands-on workshop.
+If you want to start from scratch and don't want to spin up a new VM, run the following steps:
+
+```bash
+### host
+# rm -rf <root> ^H^H^H^H^H
+rm -f $HOME/.astrarc
+rm -rf $HOME/zdm_prometheus_config
+rm -rf $HOME/zdm_grafana_config
+rm -rf $HOME/zdm_grafana_dashboards
+rm -rf $HOME/zdm_proxy_config_fragments
+rm -rf $HOME/zdm_proxy_config.env
+rm -f $HOME/.astra/scb/scb_*.zip
+rm -f $HOME/.bash_history
+touch $HOME/.bash_history
+rm -f $HOME/.viminfo
 ```
 
 #### _🗒️ Well, this is really the end. Time to wrap it up._
