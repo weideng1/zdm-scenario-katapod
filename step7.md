@@ -46,6 +46,7 @@ In this Sideloader exercise, we will also include another keyspace `nutrition` a
 we include its content in our origin database snapshot, we should ensure the schema also exists on target database (Astra):
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
+astra db create-keyspace -k nutrition zdmtarget
 cd /workspace/zdm-scenario-katapod/
 cqlsh dse1 -u cassandra -p cassandra \
 -e "describe keyspace nutrition;" > target_config/target_nutrition_schema.cql
