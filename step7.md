@@ -45,9 +45,9 @@ You should see just the few rows written once you restarted the API to take adva
 Take a snapshot of all the data in the keyspace `zdmapp` on Origin, calling your snapshot `data_migration_snapshot` :
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
-docker exec \
-  -it cassandra-origin-1 \
-  nodetool snapshot -t data_migration_snapshot zdmapp
+for i in dse1 dse2 dse3; do
+  ssh -o StrictHostKeyChecking=no $i /opt/dse-6.8.53/bin/nodetool snapshot -t data_migration_snapshot zdmapp nutrition &
+done; wait
 ```
 
 Next you have to initialize the Sideloader data migration for Target. The initialization API returns immediately and gives you a `migrationID`, which will be needed in the rest of the process.
@@ -96,35 +96,31 @@ curl -s -X GET \
     https://api.astra.datastax.com/v2/databases/${ASTRA_DB_ID}/migrations/${MIGRATION_ID} \
     | jq . > init_complete_output.json
 export MIGRATION_DIR=$(jq '.uploadBucketDir' init_complete_output.json | tr -d '"')
-export ACCESS_KEY_ID=$(jq '.uploadCredentials.keys.accessKeyID' init_complete_output.json | tr -d '"')
-export SECRET_ACCESS_KEY=$(jq '.uploadCredentials.keys.secretAccessKey' init_complete_output.json | tr -d '"')
-export SESSION_TOKEN=$(jq '.uploadCredentials.keys.sessionToken' init_complete_output.json | tr -d '"')
+export AWS_ACCESS_KEY_ID=$(jq '.uploadCredentials.keys.accessKeyID' init_complete_output.json | tr -d '"')
+export AWS_SECRET_ACCESS_KEY=$(jq '.uploadCredentials.keys.secretAccessKey' init_complete_output.json | tr -d '"')
+export AWS_SESSION_TOKEN=$(jq '.uploadCredentials.keys.sessionToken' init_complete_output.json | tr -d '"')
 ```
 
-Now you are ready to upload your snapshot to the migration directory. To do so, you will use the AWS CLI that is pre-installed on your Origin node. Remember that your Origin node runs as a Docker container, so the command below needs to pass the required environment variables from the host to the container.
+Now you are ready to upload your snapshot to the migration directory. To do so, you will use the AWS CLI that is pre-installed on your Origin node.
 
 Run the following command:
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
-docker exec \
-  -e AWS_ACCESS_KEY_ID=$ACCESS_KEY_ID \
-  -e AWS_SECRET_ACCESS_KEY=$SECRET_ACCESS_KEY \
-  -e AWS_SESSION_TOKEN=$SESSION_TOKEN \
-  -e MIGRATION_DIR=$MIGRATION_DIR \
-  -it cassandra-origin-1 \
-  aws s3 sync --only-show-errors --exclude '*' --include '*/snapshots/data_migration_snapshot*' /var/lib/cassandra/data/ ${MIGRATION_DIR}node1
+for i in dse1 dse2 dse3; do
+  ssh $i \
+  -o SendEnv=AWS_ACCESS_KEY_ID \
+  -o SendEnv=AWS_SECRET_ACCESS_KEY \
+  -o SendEnv=AWS_SESSION_TOKEN \
+  -o SendEnv=MIGRATION_DIR \
+  AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN \
+  aws s3 sync --only-show-errors --exclude '*' --include '*/snapshots/data_migration_snapshot*' /var/lib/cassandra/data/ ${MIGRATION_DIR}node-${i}
+done; wait
 ```
 
 Check that the data has been uploaded correctly to the migration directory:
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
-docker exec \
-  -e AWS_ACCESS_KEY_ID=$ACCESS_KEY_ID \
-  -e AWS_SECRET_ACCESS_KEY=$SECRET_ACCESS_KEY \
-  -e AWS_SESSION_TOKEN=$SESSION_TOKEN \
-  -e MIGRATION_DIR=$MIGRATION_DIR \
-  -it cassandra-origin-1 \
-  aws s3 ls --recursive --summarize --human-readable $MIGRATION_DIR
+aws s3 ls --recursive --summarize --human-readable $MIGRATION_DIR
 ```
 
 When the upload is complete, you are finally ready to launch the migration by calling the following API:
