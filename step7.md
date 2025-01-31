@@ -113,7 +113,7 @@ for i in dse1 dse2 dse3; do
   -o SendEnv=AWS_SESSION_TOKEN \
   -o SendEnv=MIGRATION_DIR \
   AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN \
-  aws s3 sync --only-show-errors --exclude '*' --include '*/snapshots/data_migration_snapshot*' /var/lib/cassandra/data/ ${MIGRATION_DIR}node-${i}
+  "aws s3 sync --only-show-errors --exclude '*' --include '*/snapshots/data_migration_snapshot/*' /var/lib/cassandra/data/ ${MIGRATION_DIR}node-${i}"
 done; wait
 ```
 
