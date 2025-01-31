@@ -107,7 +107,7 @@ Run the following command:
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
 for i in dse1 dse2 dse3; do
-  ssh $i \
+  ssh -o StrictHostKeyChecking=no $i \
   -o SendEnv=AWS_ACCESS_KEY_ID \
   -o SendEnv=AWS_SECRET_ACCESS_KEY \
   -o SendEnv=AWS_SESSION_TOKEN \
@@ -123,7 +123,15 @@ Check that the data has been uploaded correctly to the migration directory:
 aws s3 ls --recursive --summarize --human-readable $MIGRATION_DIR
 ```
 
-When the upload is complete, you are finally ready to launch the migration by calling the following API:
+When the upload is complete, execute the following to clear the snapshots on the origin database:
+```bash
+### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
+for i in dse1 dse2 dse3; do
+  ssh -o StrictHostKeyChecking=no $i /opt/dse-6.8.53/bin/nodetool clearsnapshot --all &
+done; wait
+```
+
+Now, you are finally ready to launch the migration by calling the following API:
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
 curl -s -X POST \
