@@ -81,7 +81,7 @@ and then try reading the recent rows from the two databases - the new row will b
 
 ```bash
 ### host
-cqlsh dse0 -u cassandra -p cassandra \
+cqlsh dse1 -u cassandra -p cassandra \
   -e "SELECT * FROM zdmapp.user_status WHERE user='eva' limit 3;"
 ```
 

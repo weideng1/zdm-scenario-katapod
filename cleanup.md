@@ -76,7 +76,7 @@ Then, drop `zdmapp` keyspace in origin database:
 
 ```bash
 ### host
-cqlsh dse0 -u cassandra -p cassandra -e "DROP KEYSPACE zdmapp;"
+cqlsh dse1 -u cassandra -p cassandra -e "DROP KEYSPACE zdmapp;"
 ```
 
 Finally, remove any remaining intermediate directories or configuration files that were generated during this hands-on workshop.

@@ -103,7 +103,7 @@ check that you can read the "ModeProxy" status rows from Origin:
 
 ```bash
 ### host
-cqlsh dse0 -u cassandra -p cassandra \
+cqlsh dse1 -u cassandra -p cassandra \
   -e "SELECT * FROM zdmapp.user_status WHERE user='eva' limit 3;"
 ```
 
