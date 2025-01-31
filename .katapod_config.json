@@ -28,7 +28,7 @@
       "intro": {
         "host": [
           {
-            "command": "/workspace/zdm-scenario-katapod/scenario_scripts/finalize_origin.sh"
+            "command": "/workspace/zdm-scenario-katapod/scenario_scripts/finalize_origin_dse.sh"
           }
         ]
       },
