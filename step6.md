@@ -103,9 +103,7 @@ check that you can read the "ModeProxy" status rows from Origin:
 
 ```bash
 ### host
-docker exec \
-  -it cassandra-origin-1 \
-  cqlsh -u cassandra -p cassandra \
+cqlsh dse0 -u cassandra -p cassandra \
   -e "SELECT * FROM zdmapp.user_status WHERE user='eva' limit 3;"
 ```
 
