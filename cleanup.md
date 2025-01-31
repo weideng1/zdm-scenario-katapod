@@ -81,6 +81,10 @@ rm -rf $HOME/zdm_prometheus_config
 rm -rf $HOME/zdm_grafana_config
 rm -rf $HOME/zdm_grafana_dashboards
 rm -rf $HOME/zdm_proxy_config_fragments
+rm -rf $HOME/zdm-scenario-katapod/running_zdm_util
+rm -f $HOME/zdm-scenario-katapod/.env
+rm -f $HOME/zdm-scenario-katapod/.find_addresses.log
+rm -f $HOME/zdm-scenario-katapod/secure-connect*zip
 rm -rf $HOME/zdm_proxy_config.env
 rm -f $HOME/.astra/scb/scb_*.zip
 rm -f $HOME/.bash_history
