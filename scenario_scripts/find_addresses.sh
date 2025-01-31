@@ -6,4 +6,5 @@ ZDM_HOST_IP="`ip addr | grep docker0: -A 2 | grep inet | awk '{print $2}' | awk 
 CASSANDRA_SEED_IP="`docker inspect cassandra-origin-1 | jq -r '.[].NetworkSettings.Networks.bridge.IPAddress'`";
 
 echo "ZDM_HOST_IP = ${ZDM_HOST_IP}";
-echo "CASSANDRA_SEED_IP = ${CASSANDRA_SEED_IP}";
+# echo "CASSANDRA_SEED_IP = ${CASSANDRA_SEED_IP}";
+echo "CASSANDRA_SEED_IP = 10.0.0.11";
