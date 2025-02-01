@@ -31,11 +31,11 @@ of the _whole_ contents of the database. To this end
 you will use the Sideloader, an AstraDB service enabling you to provide a snapshot of your data so that it can be automatically uploaded to Target. You interact with the Sideloader through dedicated DevOps APIs.
 
 Verify that the entries inserted before the switch to using the ZDM Proxy are **not** found on Target.
-To do so, launch this command _(editing the database name if different from `zdmtarget`)_:
+To do so, launch this command _(editing the database name if different from `sko26`)_:
 
 ```bash
 ### host
-astra db cqlsh zdmtarget \
+astra db cqlsh sko26 \
   -k zdmapp \
   -e "PAGING OFF; SELECT * FROM zdmapp.user_status WHERE user='eva' limit 500;"
 ```
@@ -46,11 +46,11 @@ In this Sideloader exercise, we will also include another keyspace `nutrition` a
 we include its content in our Origin snapshot, we should ensure the schema also exists on Target (Astra):
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
-astra db create-keyspace -k nutrition zdmtarget
+astra db create-keyspace -k nutrition sko26
 cd /workspace/zdm-scenario-katapod/
 cqlsh dse1 -u cassandra -p cassandra \
 -e "describe keyspace nutrition;" > target_config/target_nutrition_schema.cql
-astra db cqlsh zdmtarget -f target_config/target_nutrition_schema.cql
+astra db cqlsh sko26 -f target_config/target_nutrition_schema.cql
 ```
 
 Take a snapshot of all the data in the keyspace `zdmapp` and `nutrition` on Origin, calling your snapshot `data_migration_snapshot` :
@@ -171,15 +171,15 @@ Once the Sideloader process has completed, you will see that now _all_ rows are
 on Target as well, including those written prior to setting up
 the ZDM Proxy.
 
-To verify this, launch this command _(editing the database name if different from `zdmtarget`)_:
+To verify this, launch this command _(editing the database name if different from `sko26`)_:
 
 ```bash
 ### host
-astra db cqlsh zdmtarget \
+astra db cqlsh sko26 \
   -k zdmapp \
   -e "PAGING OFF; SELECT * FROM zdmapp.user_status WHERE user='eva' limit 500;"
 
-astra db cqlsh zdmtarget \
+astra db cqlsh sko26 \
   -e "select count(*) from nutrition.nutrition_data;"
 ```
 

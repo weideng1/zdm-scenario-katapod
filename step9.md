@@ -85,11 +85,11 @@ cqlsh dse1 -u cassandra -p cassandra \
   -e "SELECT * FROM zdmapp.user_status WHERE user='eva' limit 3;"
 ```
 
-For Target, launch the following _(editing the database name if different from `zdmtarget`)_:
+For Target, launch the following _(editing the database name if different from `sko26`)_:
 
 ```bash
 ### host
-astra db cqlsh zdmtarget \
+astra db cqlsh sko26 \
   -k zdmapp \
   -e "SELECT * FROM zdmapp.user_status WHERE user='eva' limit 3;"
 ```

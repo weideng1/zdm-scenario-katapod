@@ -108,11 +108,11 @@ cqlsh dse1 -u cassandra -p cassandra \
 ```
 
 Likewise, you can do the same check on Target, i.e. Astra DB:
-Run the following _(editing the database name if different from `zdmtarget`)_:
+Run the following _(editing the database name if different from `sko26`)_:
 
 ```bash
 ### host
-astra db cqlsh zdmtarget \
+astra db cqlsh sko26 \
   -k zdmapp \
   -e "SELECT * FROM zdmapp.user_status WHERE user='eva' limit 3;"
 ```

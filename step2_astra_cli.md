@@ -39,18 +39,18 @@ to perform most of the required steps from the console.
 However, database creation and generation of an associated token are still done on the Astra Web UI:
 
 - Create your [Astra account](https://astra.datastax.com/) if you haven't yet.
-- Create a database called `zdmtarget` with a `zdmapp` keyspace ([detailed instructions](https://awesome-astra.github.io/docs/pages/astra/create-instance/)). _Use the AWS cloud provider. The DB will be ready to use in 2-3 minutes._
+- Create a database called `sko26` with a `zdmapp` keyspace ([detailed instructions](https://awesome-astra.github.io/docs/pages/astra/create-instance/)). _Use the AWS cloud provider. The DB will be ready to use in 2-3 minutes._
 - Get a **"Database Administrator"** database token from the Astra UI and store it in a safe place ([detailed instructions](https://awesome-astra.github.io/docs/pages/astra/create-token/#c-procedure)). _You will need it a few times throughout the exercise. For the ZDM Proxy a "R/W User" token would suffice, but a more powerful token is needed for the `astra-cli` automation and to use the Sideloader._
 
 <details class="katapod-details"><summary>I want to re-use an Astra DB instance I already have</summary>
 
-If you already have a database (likely with a name other than `zdmtarget`)
+If you already have a database (likely with a name other than `sko26`)
 and want to use it, that's no problem at all! Just make sure you
 [create a new keyspace](https://awesome-astra.github.io/docs/pages/astra/faq/#add-a-keyspace-to-an-existing-database) 
 called `zdmapp` in your database and, in case the DB is in the "hibernated" state, please
 [resume it](https://awesome-astra.github.io/docs/pages/astra/resume-db/) before moving to next step.
 
-All you have to do then is replacing the name `zdmtarget` with your database
+All you have to do then is replacing the name `sko26` with your database
 the few times it appears in the console commands for the rest of this scenario.
 
 </details>
@@ -72,17 +72,17 @@ Run the following command to verify your token is correctly saved:
 cat ~/.astrarc
 ```
 
-If you forgot to create `zdmapp` keyspace as instructed earlier, you can run the following astra-cli command to create it (edit the database name if different from `zdmtarget`):
+If you forgot to create `zdmapp` keyspace as instructed earlier, you can run the following astra-cli command to create it (edit the database name if different from `sko26`):
 ```bash
 ### host
-astra db create-keyspace -k zdmapp zdmtarget
+astra db create-keyspace -k zdmapp sko26
 ```
 
-Have the CLI prepare a `.env` file, useful to later retrieve the database ID _(edit the database name if different from `zdmtarget`)_:
+Have the CLI prepare a `.env` file, useful to later retrieve the database ID _(edit the database name if different from `sko26`)_:
 
 ```bash
 ### host
-astra db create-dotenv zdmtarget -k zdmapp -d /workspace/zdm-scenario-katapod
+astra db create-dotenv sko26 -k zdmapp -d /workspace/zdm-scenario-katapod
 ```
 
 During creation of this file, the "secure connect bundle" zipfile, needed by
@@ -103,14 +103,14 @@ Check the contents of the script file with
 cat /workspace/zdm-scenario-katapod/target_config/target_schema.cql
 ```
 
-and then execute it on the newly-created Astra DB instance _(editing the database name if different from `zdmtarget`)_:
+and then execute it on the newly-created Astra DB instance _(editing the database name if different from `sko26`)_:
 
 ```bash
 ### host
 cd /workspace/zdm-scenario-katapod/
-astra db cqlsh zdmtarget -e "DROP TABLE zdmapp.user_status"
-astra db cqlsh zdmtarget -f target_config/target_schema.cql
-astra db cqlsh zdmtarget -e "SELECT * FROM zdmapp.user_status"
+astra db cqlsh sko26 -e "DROP TABLE zdmapp.user_status"
+astra db cqlsh sko26 -f target_config/target_schema.cql
+astra db cqlsh sko26 -e "SELECT * FROM zdmapp.user_status"
 ```
 
 HINT: If you encounter error `Keyspace 'zdmapp' does not exist`, you can run the following astr-cli command to create it before trying again:
@@ -118,7 +118,7 @@ HINT: If you encounter error `Keyspace 'zdmapp' does not exist`, you can run the
 ```bash
 ### host
 cd /workspace/zdm-scenario-katapod/
-astra db create-keyspace -k zdmapp zdmtarget
+astra db create-keyspace -k zdmapp sko26
 ```
 
 #### _🗒️ Your brand new database is created and has the right schema. Now you can start setting up the ZDM process, instructing it to use Astra DB as target._

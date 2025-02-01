@@ -99,7 +99,7 @@ If this is the first time you've launched the hands-on workshop, you can ignore 
 
 ```bash
 ### {"terminalId": "host"}
-astra db cqlsh zdmtarget -k zdmapp -e "TRUNCATE zdmapp.user_status"
+astra db cqlsh sko26 -k zdmapp -e "TRUNCATE zdmapp.user_status"
 ```
 
 #### _🗒️ The container is now all set to deploy the ZDM host(s) for you, which will then be ready to accept the connections currently directed at Origin cluster. Ready to deploy the hosts?_
