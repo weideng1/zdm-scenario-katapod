@@ -98,7 +98,7 @@ docker ps
 If this is the first time you've launched the hands-on workshop, you can ignore the following step, otherwise, please run it to ensure the target table in your AstraDB database is fully truncated and no new write are present from the previous hands-on workshop(s).
 
 ```bash
-### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
+### {"terminalId": "host"}
 astra db cqlsh zdmtarget -k zdmapp -e "TRUNCATE zdmapp.user_status"
 ```
 
