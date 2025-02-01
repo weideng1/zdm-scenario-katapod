@@ -24,7 +24,7 @@
 
 ![Phase 6](images/p6.png)
 
-#### _🎯 Goal: cleanly deleting all resources that are no longer needed now that the migration is over. If you intend to clean up artifacts from the previous steps so that you can start from step 0 without spinning up a new VM, this step will help. _
+#### _🎯 Goal: cleanly deleting all resources that are no longer needed now that the migration is over. If you intend to clean up artifacts from the previous steps so that you can start from step 0 without spinning up a new VM, this step will help._
 
 If your ZDM infrastructure was running on disposable hosts, such as
 cloud instances that you can delete with one click), you could do so now.
