@@ -114,6 +114,24 @@ curl -s -XGET "localhost:8000/status/eva?entries=10" | jq -r '.[] | "\(.when)\t\
 This corresponds now to reads being sent to Target: you can verify it on
 the "reads_target" curve in the "Read throughput by instance" plot.
 
+#### 🚀 Challenge
+
+Before completely moving away from the proxy, try to take another look at the dashboard, and scroll down to the request failure
+diagrams, and see if you have noticed anything unusual.
+
+Yes! There seems to be quite a bit of constant write failures. Can you find out what is the root cause? Is it always on one side?
+
+If there is write failure, wouldn't that cause client-side write error? But you haven't seen any of those in the application log, have you?
+
+ZDM Proxy's dual-write is designed to always fail if either side of Origin or Target fails. This is to ensure that newly
+written data is fully consistent across both databases. So having write failures to show up in dashboard but not seeing them
+in the client application is definitely something worth investigating.
+
+<details><summary>🔎 For some extra hint, click to expand.</summary>
+By now, I’m sure you’ve gone through the ZDM proxy logs and found nothing alarming. Try to enable DEBUG level
+log and see if you can find any more clue.
+</details>
+
 <!-- NAVIGATION -->
 <div id="navigation-bottom" class="navigation-bottom">
  <a title="Back" href='command:katapod.loadPage?[{"step":"step8"}]'
