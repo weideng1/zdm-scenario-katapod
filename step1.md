@@ -110,16 +110,6 @@ Feel free to play with the GET endpoint to see the trickle of new rows in the AP
 
 ![Schema, phase 0a](images/schema0a_r.png)
 
-_🧭 You can choose whether to proceed to next step either using the Astra
-Web UI or using a CLI in the console (_except for the DB creation part, which is on the Astra UI anyway_).
-The result will be the same -- just keep in mind that for the
-CLI route you'll use an Astra database auth token with slightly higher
-permissions than strictly
-[needed for the migration](https://docs.datastax.com/en/astra-serverless/docs/migrate/create-target.html#_create_an_astra_db_serverless_cluster)
-itself._
-
-_↔️ Please choose how you would like to perform the next step (setting up Target):_
-
 <!-- NAVIGATION -->
 <div id="navigation-top" class="navigation-top">
   <a title="Back" href='command:katapod.loadPage?[{"step":"intro"}]' 
