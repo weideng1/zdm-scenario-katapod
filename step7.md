@@ -84,6 +84,8 @@ curl -s -X GET \
     | jq .status
 ```
 
+#### _WARNING:_ please avoid querying this status DevOps API endpoint too frequently, it will hit Astra prod control plane and may affect other customers. Try to limit your status check to every 30 seconds or longer.
+
 If you see this error message: `parse error: Invalid numeric literal at line 1, column 9`, just wait for a couple of minutes and try again.
 
 When the status switches to `ReceivingFiles`, the initialization is complete. Run the check status command again with the full output.
