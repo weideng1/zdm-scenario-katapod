@@ -14,7 +14,7 @@
   </a>
   <span class="step-count">Step 1</span>
   <a title="Next (astra-cli)" href='command:katapod.loadPage?[{"step":"step2_astra_cli"}]' 
-    class="btn btn-dark navigation-top-right">Next (astra-cli) ➡️
+    class="btn btn-dark navigation-top-right">Next ➡️
   </a>
 </div>
 
@@ -126,6 +126,6 @@ _↔️ Please choose how you would like to perform the next step (setting up Ta
     class="btn btn-dark navigation-top-left">⬅️ Back
   </a>
   <a title="Next (astra-cli)" href='command:katapod.loadPage?[{"step":"step2_astra_cli"}]' 
-    class="btn btn-dark navigation-top-right">Next (astra-cli) ➡️
+    class="btn btn-dark navigation-top-right">Next ➡️
   </a>
 </div>

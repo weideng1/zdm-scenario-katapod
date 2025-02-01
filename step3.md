@@ -10,7 +10,7 @@
 <!-- NAVIGATION -->
 <div id="navigation-top" class="navigation-top">
   <a title="Back (astra-cli)" href='command:katapod.loadPage?[{"step":"step2_astra_cli"}]' 
-    class="btn btn-dark navigation-top-left">⬅️ Back (astra-cli)
+    class="btn btn-dark navigation-top-left">⬅️ Back
   </a>
   <span class="step-count">Step 3</span>
   <a title="Next" href='command:katapod.loadPage?[{"step":"step4"}]' 
@@ -107,7 +107,7 @@ astra db cqlsh zdmtarget -k zdmapp -e "TRUNCATE zdmapp.user_status"
 <!-- NAVIGATION -->
 <div id="navigation-top" class="navigation-top">
   <a title="Back (astra-cli)" href='command:katapod.loadPage?[{"step":"step2_astra_cli"}]' 
-    class="btn btn-dark navigation-top-left">⬅️ Back (astra-cli)
+    class="btn btn-dark navigation-top-left">⬅️ Back
   </a>
   <a title="Next" href='command:katapod.loadPage?[{"step":"step4"}]' 
     class="btn btn-dark navigation-top-right">Next ➡️
