@@ -37,7 +37,7 @@ To do so, launch this command _(editing the database name if different from `zdm
 ### host
 astra db cqlsh zdmtarget \
   -k zdmapp \
-  -e "SELECT * FROM zdmapp.user_status WHERE user='eva' limit 500;"
+  -e "PAGING OFF; SELECT * FROM zdmapp.user_status WHERE user='eva' limit 500;"
 ```
 
 You should see just the few rows written once you restarted the API to take advantage of the ZDM Proxy.
