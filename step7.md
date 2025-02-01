@@ -190,8 +190,9 @@ until the moment you decide to cut over and neglect Origin altogether.
 
 #### 🔎 Monitoring suggestion
 
-Since the data migrator connects **directly to Origin and Target, oblivious to
-the ZDM Proxy**, the migration workload will not be reflected in the monitoring.
+Since the historical data migrator (aka. Sideloader) connects
+**directly to Origin and Target, oblivious to the ZDM Proxy**, the migration
+workload will not be reflected in the monitoring.
 You can confirm this by looking at the proxy instance graphs, which will show
 no read activity and the usual background write activity.
 In other words, the data migration occurs outside of the proxy's scope,
