@@ -90,7 +90,13 @@ cd /home/ubuntu/zdm-proxy-automation/ansible
 ansible-playbook deploy_zdm_proxy.yml -i zdm_ansible_inventory
 ```
 
-This will provision, configure and start the ZDM Proxy, one container per instance
+HINT: while waiting for zdm-proxy to be deployed for the first time, 
+you can skip over to Step 7 (Phase 2) to execute up to the "call the 
+initialization API" block. That is an operation that will take 5+ minutes, 
+so you can save some total run time. Once you initalize the migration in 
+Step 7, you can come back to this Step 4 and continue the rest of the blocks.
+
+The above ansible-playbook block will provision, configure and start the ZDM Proxy, one container per instance
 (in this exercise there'll be a single instance, `zdm-proxy-container`).
 Once this is done, you can check the new container is listed in the output of
 
