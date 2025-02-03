@@ -74,7 +74,7 @@ export MIGRATION_ID=$(curl -s -X POST \
     | jq '.migrationID' | tr -d '"')
 ```
 
-Periodically check the status of your migration until you see it switching to `ReceivingFiles`:
+This initialize step will take 5+ minutes. Periodically check the status of your migration until you see it switching to `ReceivingFiles`:
 ```bash
 ### {"terminalId": "host", "backgroundColor": "#C5DDD2"}
 curl -s -X GET \
@@ -164,6 +164,10 @@ curl -s -X GET \
     https://api.astra.datastax.com/v2/databases/${ASTRA_DB_ID}/migrations/${MIGRATION_ID} \
     | jq -r '"\(.status)\n\(.progressInfo)"'
 ```
+
+Initially you will see status showing "ReceivingFiles", and after a couple of minutes, it should start showing `ImportStarting`, and then additional progress information.
+The total runtime will be 6 minutes.
+
 The final status for a successful migration is `MigrationDone`. 
 
 Once the Sideloader process has completed, you will see that now _all_ rows are
